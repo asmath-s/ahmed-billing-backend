@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quotations",
+  "info": {
+    "singularName": "quotation",
+    "pluralName": "quotations",
+    "displayName": "Quotation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quotationNo": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "customerName": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "topText": {
+      "type": "richtext"
+    },
+    "columns": {
+      "type": "json"
+    },
+    "rows": {
+      "type": "json"
+    },
+    "taxPercent": {
+      "type": "float"
+    },
+    "discountAmount": {
+      "type": "float"
+    },
+    "bottomText": {
+      "type": "richtext"
+    },
+    "grandTotal": {
+      "type": "float"
+    }
+  }
+}

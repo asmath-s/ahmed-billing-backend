@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "local_lists",
+  "info": {
+    "singularName": "local-list",
+    "pluralName": "local-lists",
+    "displayName": "Local List"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "bill_no": {
+      "type": "biginteger",
+      "unique": true
+    },
+    "date": {
+      "type": "datetime"
+    },
+    "note": {
+      "type": "string"
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::customer.customer",
+      "inversedBy": "local_lists"
+    },
+    "size_data": {
+      "type": "component",
+      "component": "flex.flex",
+      "repeatable": true
+    },
+    "cash": {
+      "type": "component",
+      "component": "flex.cash",
+      "repeatable": true
+    },
+    "gpay": {
+      "type": "component",
+      "component": "flex.gpay",
+      "repeatable": true
+    },
+    "received_amount": {
+      "type": "float"
+    },
+    "balance_amount": {
+      "type": "float"
+    },
+    "total_amount": {
+      "type": "float"
+    },
+    "current_status": {
+      "type": "string"
+    },
+    "particulars": {
+      "type": "component",
+      "component": "particulars.particulars",
+      "repeatable": true
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "cash_received": {
+      "type": "float"
+    },
+    "gpay_received": {
+      "type": "float"
+    },
+    "custom_type": {
+      "type": "string"
+    }
+  }
+}

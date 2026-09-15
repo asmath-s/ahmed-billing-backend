@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_flex_flexes",
+  "info": {
+    "displayName": "size",
+    "icon": "book"
+  },
+  "options": {},
+  "attributes": {
+    "width": {
+      "type": "float"
+    },
+    "height": {
+      "type": "float"
+    },
+    "sq_ft_price": {
+      "type": "float"
+    },
+    "piece_count": {
+      "type": "float"
+    },
+    "instruction": {
+      "type": "text"
+    },
+    "per_piece_total": {
+      "type": "float"
+    },
+    "per_piece_amount": {
+      "type": "float"
+    },
+    "type": {
+      "type": "string"
+    },
+    "material": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

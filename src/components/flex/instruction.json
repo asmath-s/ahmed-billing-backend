@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_flex_instructions",
+  "info": {
+    "displayName": "instruction"
+  },
+  "options": {},
+  "attributes": {
+    "instruction": {
+      "type": "text"
+    },
+    "piece_count": {
+      "type": "biginteger"
+    },
+    "per_piece_amount": {
+      "type": "float"
+    },
+    "per_piece_total": {
+      "type": "float"
+    }
+  },
+  "config": {}
+}

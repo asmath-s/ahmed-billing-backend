@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "local_expenses",
+  "info": {
+    "singularName": "local-expense",
+    "pluralName": "local-expenses",
+    "displayName": "Local Expense"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "instruction": {
+      "type": "text"
+    },
+    "custom_type": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "float"
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "current_status": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    }
+  }
+}

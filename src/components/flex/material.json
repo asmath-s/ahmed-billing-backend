@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_flex_materials",
+  "info": {
+    "displayName": "material"
+  },
+  "options": {},
+  "attributes": {
+    "material": {
+      "type": "enumeration",
+      "enum": [
+        "Shine",
+        "Shine 3pass",
+        "Star",
+        "vinyl",
+        "vinyl + lamination",
+        "Backlight",
+        "Backlight 2bl depth",
+        "Eco vinyl",
+        "Eco vinyl + lamination",
+        "Eco star",
+        "Eco Backlight",
+        "Uv Star",
+        "Uv Star (full black)",
+        "Uv vinyl",
+        "Uv vinyl (full black)",
+        "Uv Backlight",
+        "Uv Backlight (full black)",
+        "Reflect Flex",
+        "Reflect Vinyl",
+        "Standee + star FLex",
+        "Standee + normal FLex",
+        "Sunpack Sheets ",
+        "Foarm uv (3mm)",
+        "Foarm uv(4 mm)",
+        "Foarm uv(5mm)",
+        "Foarm + vinyl + lamin(3 mm)",
+        "Foarm + vinyl + lamin(5 mm)",
+        "Foarm + uv vinyl + lamin(3 mm)",
+        "Foarm + uv vinyl + lamin(5 mm)",
+        "Frame + shine + pasting",
+        "Frame + star + pasting",
+        "Frame + backlight + pasting"
+      ]
+    }
+  },
+  "config": {}
+}

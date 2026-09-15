@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_particulars_particulars",
+  "info": {
+    "displayName": "particulars"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

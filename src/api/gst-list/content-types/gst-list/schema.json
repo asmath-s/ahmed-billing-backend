@@ -1,0 +1,73 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gst_lists",
+  "info": {
+    "singularName": "gst-list",
+    "pluralName": "gst-lists",
+    "displayName": "Gst List"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "bill_no": {
+      "type": "string"
+    },
+    "hsn_code": {
+      "type": "string"
+    },
+    "uom": {
+      "type": "string"
+    },
+    "gst_customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::gst-customer.gst-customer",
+      "inversedBy": "gst_lists"
+    },
+    "size_data": {
+      "type": "component",
+      "component": "flex.flex",
+      "repeatable": true
+    },
+    "method": {
+      "type": "string"
+    },
+    "gst_percentage": {
+      "type": "float"
+    },
+    "base_amount": {
+      "type": "float"
+    },
+    "tax_amount": {
+      "type": "float"
+    },
+    "total_amount": {
+      "type": "float"
+    },
+    "particulars": {
+      "type": "component",
+      "component": "particulars.particulars",
+      "repeatable": true
+    },
+    "received_amount": {
+      "type": "float"
+    },
+    "current_status": {
+      "type": "string"
+    },
+    "round_off": {
+      "type": "float"
+    },
+    "received_bill_nos": {
+      "type": "json"
+    },
+    "received_method": {
+      "type": "string"
+    }
+  }
+}

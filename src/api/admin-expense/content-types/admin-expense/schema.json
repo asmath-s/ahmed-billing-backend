@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "admin_expenses",
+  "info": {
+    "singularName": "admin-expense",
+    "pluralName": "admin-expenses",
+    "displayName": "Admin Expense"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "instruction": {
+      "type": "text"
+    },
+    "custom_type": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "float"
+    },
+    "role": {
+      "type": "string"
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "current_status": {
+      "type": "string"
+    }
+  }
+}

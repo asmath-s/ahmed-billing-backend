@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "gst_expenses",
+  "info": {
+    "singularName": "gst-expense",
+    "pluralName": "gst-expenses",
+    "displayName": "Gst Expense"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "base_amount": {
+      "type": "float"
+    },
+    "gst_percentage": {
+      "type": "float"
+    },
+    "total_amount": {
+      "type": "float"
+    },
+    "sended_amount": {
+      "type": "float"
+    },
+    "current_status": {
+      "type": "string"
+    },
+    "bill_no": {
+      "type": "string"
+    },
+    "sended_bill_nos": {
+      "type": "json"
+    },
+    "vendor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::vendor.vendor",
+      "inversedBy": "gst_expenses"
+    },
+    "tax_amount": {
+      "type": "float"
+    },
+    "sended_method": {
+      "type": "string"
+    }
+  }
+}

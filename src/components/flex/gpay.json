@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_flex_gpays",
+  "info": {
+    "displayName": "gpay"
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "amount": {
+      "type": "float"
+    }
+  },
+  "config": {}
+}
