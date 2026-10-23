@@ -1,22 +1,9 @@
 "use strict";
 
-const isBetweenDates = (date, fromDate, toDate) => {
-  if (!date) return false;
-
-  const d = new Date(date);
-
-  const from = fromDate ? new Date(fromDate) : null;
-  const to = toDate ? new Date(toDate) : null;
-
-  if (to) {
-    to.setHours(23, 59, 59, 999);
-  }
-
-  return (!from || d >= from) && (!to || d <= to);
-};
+const { isBetweenDates } = require("../../../utils/dateUtils");
 
 module.exports = {
-  async getTotals(query) {
+  async getTotals(query = {}) {
     const filters = query.filters || {};
     const fromDate = query.fromDate;
     const toDate = query.toDate;
@@ -55,6 +42,10 @@ module.exports = {
       ibuGiveInGapy: 0,
       ibuGiveInAccount: 0,
     };
+
+    if (!Array.isArray(data)) {
+      return totals;
+    }
 
     data.forEach((item) => {
       if (!isBetweenDates(item.date, fromDate, toDate)) return;
@@ -107,7 +98,6 @@ module.exports = {
     });
 
     totals.asmathTotalBalance = totals.asmathTotalGive - totals.asmathTotalGet;
-
     totals.ibuTotalBalance = totals.ibuTotalGive - totals.ibuTotalGet;
 
     return totals;

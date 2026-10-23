@@ -71,6 +71,11 @@
     },
     "custom_type": {
       "type": "string"
+    },
+    "no_recieved": {
+      "type": "component",
+      "component": "flex.no-recieved",
+      "repeatable": true
     }
   }
 }

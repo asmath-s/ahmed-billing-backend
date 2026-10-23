@@ -46,6 +46,11 @@
     },
     "sended_method": {
       "type": "string"
+    },
+    "particulars": {
+      "type": "component",
+      "component": "particulars.particulars",
+      "repeatable": true
     }
   }
 }

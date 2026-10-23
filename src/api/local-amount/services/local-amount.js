@@ -1,72 +1,14 @@
 "use strict";
 
-/**
- * Check whether a date is inside the selected date range.
- */
-const isDateBetween = (date, fromDate, toDate) => {
-  if (!date) return false;
-
-  const currentDate = new Date(date);
-
-  const from = fromDate ? new Date(fromDate) : null;
-  const to = toDate ? new Date(toDate) : null;
-
-  if (to) {
-    to.setHours(23, 59, 59, 999);
-  }
-
-  if (from && currentDate < from) {
-    return false;
-  }
-
-  if (to && currentDate > to) {
-    return false;
-  }
-
-  return true;
-};
-
-/**
- * Sum cash/gpay payment records by their payment date.
- */
-const sumPaymentsBetween = (payments, fromDate, toDate) => {
-  if (!Array.isArray(payments)) {
-    return 0;
-  }
-
-  return payments.reduce((total, payment) => {
-    if (!payment || !payment.date) {
-      return total;
-    }
-
-    if (!isDateBetween(payment.date, fromDate, toDate)) {
-      return total;
-    }
-
-    return total + Number(payment.amount || 0);
-  }, 0);
-};
-
-/**
- * Get a value only when the parent record date
- * is inside the selected date range.
- */
-const valueBetween = (value, date, fromDate, toDate) => {
-  if (value === null || value === undefined || !date) {
-    return 0;
-  }
-
-  if (!isDateBetween(date, fromDate, toDate)) {
-    return 0;
-  }
-
-  return Number(value || 0);
-};
+const {
+  isDateBetween,
+  sumPaymentsBetween,
+  valueBetween,
+} = require("../../../utils/dateUtils");
 
 module.exports = {
-  async getTotals(query) {
+  async getTotals(query = {}) {
     const filters = query.filters || {};
-
     const fromDate = query.fromDate || null;
     const toDate = query.toDate || null;
 
@@ -74,11 +16,11 @@ module.exports = {
       "api::local-list.local-list",
       {
         filters,
-
         populate: {
           customer: true,
           cash: true,
           gpay: true,
+          no_recieved: true,
         },
       },
     );
@@ -87,54 +29,53 @@ module.exports = {
       local_list: {
         total_cash: 0,
         total_gpay: 0,
+        total_no_recieved: 0,
         total_balance: 0,
       },
 
       local_paid: {
         total_cash: 0,
         total_gpay: 0,
+        total_no_recieved: 0,
         total_balance: 0,
       },
 
       local_pending: {
         total_cash: 0,
         total_gpay: 0,
+        total_no_recieved: 0,
         total_balance: 0,
       },
 
       local_party: {
         total_cash: 0,
         total_gpay: 0,
+        total_no_recieved: 0,
         total_balance: 0,
       },
 
       local_total: {
         total_cash: 0,
         total_gpay: 0,
+        total_no_recieved: 0,
         total_balance: 0,
       },
 
       sales_total: 0,
     };
 
+    if (!Array.isArray(data)) {
+      return totals;
+    }
+
     /**
      * Store party information customer-wise.
      *
      * Example:
-     *
      * customer 999:
-     *
-     * party bills:
-     * 200
-     * 450
-     * 150
-     *
-     * party payments:
-     * 6000
-     *
-     * Result:
-     *
-     * 800 - 6000 = -5200
+     * party bills: 200, 450, 150
+     * party payments: 6000
+     * Result: 800 - 6000 = -5200
      */
     const partyByCustomer = {};
 
@@ -172,31 +113,43 @@ module.exports = {
 
       /**
        * -------------------------------------------------------
+       * NO RECIEVED
+       * -------------------------------------------------------
+       */
+      const noRecievedSum = sumPaymentsBetween(
+        item.no_recieved,
+        fromDate,
+        toDate,
+      );
+
+      const noRecievedTotal = noRecievedSum;
+
+      /**
+       * -------------------------------------------------------
        * SALES TOTAL
        *
        * total_amount = 0 for separate party payment,
        * therefore it will not increase sales.
        * -------------------------------------------------------
        */
-      const salesTotal = valueBetween(
-        item.total_amount,
-        item.date,
-        fromDate,
-        toDate,
-      );
+      const salesTotal =
+        valueBetween(item.total_amount, item.date, fromDate, toDate) -
+        noRecievedTotal;
 
       totals.sales_total += salesTotal;
 
       /**
        * -------------------------------------------------------
-       * CASH / GPAY TOTAL
+       * CASH / GPAY / NO RECIEVED TOTAL
        * -------------------------------------------------------
        */
       totals[statusKey].total_cash += cashTotal;
       totals[statusKey].total_gpay += gpayTotal;
+      totals[statusKey].total_no_recieved += noRecievedTotal;
 
       totals.local_total.total_cash += cashTotal;
       totals.local_total.total_gpay += gpayTotal;
+      totals.local_total.total_no_recieved += noRecievedTotal;
 
       /**
        * -------------------------------------------------------
@@ -217,8 +170,10 @@ module.exports = {
           toDate,
         );
 
-        totals[statusKey].total_balance += balance;
-        totals.local_total.total_balance += balance;
+        const adjustedBalance = balance - noRecievedTotal;
+
+        totals[statusKey].total_balance += adjustedBalance;
+        totals.local_total.total_balance += adjustedBalance;
       }
 
       /**
@@ -234,8 +189,7 @@ module.exports = {
           item.customer?.id || item.customer?.documentId || item.customer_id;
 
         /**
-         * If there is no customer, skip customer-wise
-         * party balance calculation.
+         * If there is no customer, skip customer-wise party balance calculation.
          */
         if (!customerId) {
           return;
@@ -248,6 +202,7 @@ module.exports = {
           partyByCustomer[customerId] = {
             billBalance: 0,
             received: 0,
+            noRecieved: 0,
           };
         }
 
@@ -260,14 +215,12 @@ module.exports = {
          * SEPARATE PARTY PAYMENT
          *
          * Example:
-         *
          * total_amount     = 0
          * balance_amount   = 0
          * received_amount  = 6000
+         * or no_recieved   = 500
          *
-         * This is NOT a bill.
-         *
-         * It reduces the customer's party balance.
+         * This is NOT a bill. It reduces the customer's party balance.
          * -----------------------------------------------------
          */
         const isSeparatePartyPayment =
@@ -286,7 +239,6 @@ module.exports = {
          * NORMAL PARTY BILL
          *
          * Example:
-         *
          * total_amount   = 200
          * balance_amount = 200
          *
@@ -295,6 +247,7 @@ module.exports = {
          */
         if (isDateBetween(item.date, fromDate, toDate)) {
           partyByCustomer[customerId].billBalance += balanceAmount;
+          partyByCustomer[customerId].noRecieved += noRecievedTotal;
         }
       }
     });
@@ -304,20 +257,14 @@ module.exports = {
      * CALCULATE FINAL PARTY BALANCE
      * ---------------------------------------------------------
      *
-     * DO NOT use Math.max().
-     *
-     * We WANT negative values.
-     *
+     * DO NOT use Math.max(). We WANT negative values.
      * Example:
-     *
-     * billBalance = 800
-     * received    = 6000
-     *
-     * balance = 800 - 6000
-     *         = -5200
+     * billBalance = 800, received = 6000, noRecieved = 500
+     * balance = 800 - 6000 - 500 = -5700
      */
     Object.values(partyByCustomer).forEach((customer) => {
-      const finalPartyBalance = customer.billBalance - customer.received;
+      const finalPartyBalance =
+        customer.billBalance - customer.received - customer.noRecieved;
 
       /**
        * Party balance.

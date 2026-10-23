@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_flex_no_recieveds",
+  "info": {
+    "displayName": "no_recieved"
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "datetime"
+    },
+    "amount": {
+      "type": "float"
+    }
+  },
+  "config": {}
+}

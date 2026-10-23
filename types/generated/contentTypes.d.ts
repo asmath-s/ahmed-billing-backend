@@ -569,6 +569,7 @@ export interface ApiGstExpenseGstExpense extends Struct.CollectionTypeSchema {
       'api::gst-expense.gst-expense'
     > &
       Schema.Attribute.Private;
+    particulars: Schema.Attribute.Component<'particulars.particulars', true>;
     publishedAt: Schema.Attribute.DateTime;
     sended_amount: Schema.Attribute.Float;
     sended_bill_nos: Schema.Attribute.JSON;
@@ -696,6 +697,7 @@ export interface ApiLocalListLocalList extends Struct.CollectionTypeSchema {
       'api::local-list.local-list'
     > &
       Schema.Attribute.Private;
+    no_recieved: Schema.Attribute.Component<'flex.no-recieved', true>;
     note: Schema.Attribute.String;
     particulars: Schema.Attribute.Component<'particulars.particulars', true>;
     publishedAt: Schema.Attribute.DateTime;

@@ -1,19 +1,6 @@
 "use strict";
 
-const isBetweenDates = (date, fromDate, toDate) => {
-  if (!date) return false;
-
-  const d = new Date(date);
-
-  const from = fromDate ? new Date(fromDate) : null;
-  const to = toDate ? new Date(toDate) : null;
-
-  if (to) {
-    to.setHours(23, 59, 59, 999);
-  }
-
-  return (!from || d >= from) && (!to || d <= to);
-};
+const { isBetweenDates } = require("../../../utils/dateUtils");
 
 const createTotals = () => ({
   total_exp_cash: 0,
@@ -26,6 +13,10 @@ const createTotals = () => ({
 
 const calculateTotals = (items, fromDate, toDate) => {
   const totals = createTotals();
+
+  if (!Array.isArray(items)) {
+    return totals;
+  }
 
   items.forEach((item) => {
     if (!isBetweenDates(item.date, fromDate, toDate)) return;
@@ -55,7 +46,7 @@ const calculateTotals = (items, fromDate, toDate) => {
 };
 
 module.exports = {
-  async getTotals(query) {
+  async getTotals(query = {}) {
     const fromDate = query.fromDate;
     const toDate = query.toDate;
 
@@ -68,6 +59,7 @@ module.exports = {
         $containsi: instruction,
       };
     }
+
     const localExpenses = await strapi.entityService.findMany(
       "api::local-expense.local-expense",
       {
@@ -99,43 +91,45 @@ module.exports = {
     };
 
     // Local Expense Totals
-    localExpenses.forEach((item) => {
-      if (!isBetweenDates(item.date, fromDate, toDate)) return;
+    if (Array.isArray(localExpenses)) {
+      localExpenses.forEach((item) => {
+        if (!isBetweenDates(item.date, fromDate, toDate)) return;
 
-      let key = null;
+        let key = null;
 
-      if (!item.approved) {
-        key = "expense";
-      } else if (item.approved && item.current_status === "approved") {
-        key = "approved";
-      } else if (item.approved && item.current_status === "production") {
-        key = "production";
-      } else if (item.approved && item.current_status === "hub") {
-        key = "hub";
-      }
-
-      if (!key) return;
-
-      const amount = Number(item.amount || 0);
-
-      if (item.method === "expense") {
-        if (item.custom_type === "cash") {
-          totals[key].total_exp_cash += amount;
-        } else if (item.custom_type === "gpay") {
-          totals[key].total_exp_gpay += amount;
-        } else if (item.custom_type === "account") {
-          totals[key].total_exp_account += amount;
+        if (!item.approved) {
+          key = "expense";
+        } else if (item.approved && item.current_status === "approved") {
+          key = "approved";
+        } else if (item.approved && item.current_status === "production") {
+          key = "production";
+        } else if (item.approved && item.current_status === "hub") {
+          key = "hub";
         }
-      } else if (item.method === "receive") {
-        if (item.custom_type === "cash") {
-          totals[key].total_rec_cash += amount;
-        } else if (item.custom_type === "gpay") {
-          totals[key].total_rec_gpay += amount;
-        } else if (item.custom_type === "account") {
-          totals[key].total_rec_account += amount;
+
+        if (!key) return;
+
+        const amount = Number(item.amount || 0);
+
+        if (item.method === "expense") {
+          if (item.custom_type === "cash") {
+            totals[key].total_exp_cash += amount;
+          } else if (item.custom_type === "gpay") {
+            totals[key].total_exp_gpay += amount;
+          } else if (item.custom_type === "account") {
+            totals[key].total_exp_account += amount;
+          }
+        } else if (item.method === "receive") {
+          if (item.custom_type === "cash") {
+            totals[key].total_rec_cash += amount;
+          } else if (item.custom_type === "gpay") {
+            totals[key].total_rec_gpay += amount;
+          } else if (item.custom_type === "account") {
+            totals[key].total_rec_account += amount;
+          }
         }
-      }
-    });
+      });
+    }
 
     // Admin Totals
     totals.admin = calculateTotals(adminExpenses, fromDate, toDate);
@@ -150,7 +144,6 @@ module.exports = {
     });
 
     // Separate Expense Total
-
     totals.local_expense_total =
       totals.expense.total_exp_cash +
       totals.expense.total_exp_gpay +

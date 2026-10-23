@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-09-15T15:29:08.833Z"
+    "x-generation-date": "2026-10-23T13:48:54.056Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -8059,6 +8059,12 @@
                 "custom_type": {
                   "type": "string"
                 },
+                "no_recieved": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlexNoRecievedComponent"
+                  }
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -8328,6 +8334,29 @@
           },
           "text": {
             "type": "string"
+          }
+        }
+      },
+      "FlexNoRecievedComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float"
           }
         }
       },
@@ -9515,6 +9544,12 @@
               "sended_method": {
                 "type": "string"
               },
+              "particulars": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ParticularsParticularsComponent"
+                }
+              },
               "locale": {
                 "type": "string"
               },
@@ -9702,6 +9737,12 @@
                     },
                     "sended_method": {
                       "type": "string"
+                    },
+                    "particulars": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ParticularsParticularsComponent"
+                      }
                     },
                     "createdAt": {
                       "type": "string",
@@ -10509,6 +10550,12 @@
           },
           "sended_method": {
             "type": "string"
+          },
+          "particulars": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticularsParticularsComponent"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -12865,6 +12912,12 @@
               "custom_type": {
                 "type": "string"
               },
+              "no_recieved": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FlexNoRecievedComponent"
+                }
+              },
               "locale": {
                 "type": "string"
               },
@@ -13071,6 +13124,12 @@
                     },
                     "custom_type": {
                       "type": "string"
+                    },
+                    "no_recieved": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/FlexNoRecievedComponent"
+                      }
                     },
                     "createdAt": {
                       "type": "string",
@@ -13924,6 +13983,12 @@
           },
           "custom_type": {
             "type": "string"
+          },
+          "no_recieved": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlexNoRecievedComponent"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -15924,6 +15989,12 @@
                 },
                 "sended_method": {
                   "type": "string"
+                },
+                "particulars": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParticularsParticularsComponent"
+                  }
                 },
                 "createdAt": {
                   "type": "string",

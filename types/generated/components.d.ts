@@ -99,6 +99,17 @@ export interface FlexMaterial extends Struct.ComponentSchema {
   };
 }
 
+export interface FlexNoRecieved extends Struct.ComponentSchema {
+  collectionName: 'components_flex_no_recieveds';
+  info: {
+    displayName: 'no_recieved';
+  };
+  attributes: {
+    amount: Schema.Attribute.Float;
+    date: Schema.Attribute.DateTime;
+  };
+}
+
 export interface ParticularsParticulars extends Struct.ComponentSchema {
   collectionName: 'components_particulars_particulars';
   info: {
@@ -117,6 +128,7 @@ declare module '@strapi/strapi' {
       'flex.gpay': FlexGpay;
       'flex.instruction': FlexInstruction;
       'flex.material': FlexMaterial;
+      'flex.no-recieved': FlexNoRecieved;
       'particulars.particulars': ParticularsParticulars;
     }
   }
