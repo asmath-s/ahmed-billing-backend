@@ -19,7 +19,7 @@
     "@strapi/plugin-cloud": "^5.51.2",
     "@strapi/plugin-documentation": "^5.51.2",
     "@strapi/plugin-users-permissions": "^5.51.2",
-    "@strapi/strapi": "^5.51.2",
+    "@strapi/strapi": "^5.55.1",
     "better-sqlite3": "12.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
